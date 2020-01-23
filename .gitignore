@@ -1,0 +1,15 @@
+.DS_Store
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.iml
+*.ipr
+*.iws
+*.test
+*.out
+.idea/
+/build/
+/dist/
+/out/
