@@ -10,6 +10,7 @@ func CheckInvalidJson(err error, c *gin.Context) error {
 	if err != nil {
 		resErr := NewBadRequestError("invalid json body")
 		c.JSON(resErr.Status, resErr)
+		fmt.Println(err)
 		return err
 	}
 	return nil

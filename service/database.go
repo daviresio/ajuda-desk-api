@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	connectionString = fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s", "127.0.0.1", "5432", "postgres", "ajudadesk", "postgres")
+	connectionString = fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s", "database-1.crwaolacl8ic.us-east-1.rds.amazonaws.com", "5432", "postgres", "ajudadesk", "postgres")
 	db *gorm.DB
 )
 
@@ -26,6 +26,6 @@ func init() {
 
 	db.LogMode(true)
 
-	db.AutoMigrate(&model.Grupo{}, )
+	db.AutoMigrate(&model.Grupo{}, &model.Contato{}, &model.Empresa{}, &model.Score{}, &model.Ticket{})
 
 }

@@ -32,6 +32,24 @@ func init() {
 	router.PUT("/grupos", service.UpdateGrupo)
 	router.DELETE("/grupos/:id", service.DeleteGrupo)
 
+	router.GET("/contatos/:id", service.FindContato)
+	router.GET("/contatos", service.ListContato)
+	router.POST("/contatos", service.CreateContato)
+	router.PUT("/contatos", service.UpdateContato)
+	router.DELETE("/contatos/:id", service.DeleteContato)
+
+	router.GET("/empresas/:id", service.FindEmpresa)
+	router.GET("/empresas", service.ListEmpresa)
+	router.POST("/empresas", service.CreateEmpresa)
+	router.PUT("/empresas", service.UpdateEmpresa)
+	router.DELETE("/empresas/:id", service.DeleteEmpresa)
+
+	router.GET("/scores/:id", service.FindScore)
+	router.GET("/scores", service.ListScore)
+	router.POST("/scores", service.CreateScore)
+	router.PUT("/scores", service.UpdateScore)
+	router.DELETE("/scores/:id", service.DeleteScore)
+
 }
 
 func GetRouter() *gin.Engine {
