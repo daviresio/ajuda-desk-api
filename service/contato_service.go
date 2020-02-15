@@ -2,15 +2,16 @@ package service
 
 import (
 	"fmt"
+	"github.com/daviresio/ajuda-desk-api/database"
 	"github.com/daviresio/ajuda-desk-api/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func ListContato(c *gin.Context) {
-	var contatos []model.Contato
+	contatos := []model.Contato{}
 
-	errors := db.Find(&contatos).GetErrors();
+	errors := database.DB.Preload("Empresas").Find(&contatos).GetErrors();
 
 	fmt.Println(len(errors))
 
@@ -37,7 +38,7 @@ func FindContato(c *gin.Context)  {
 		return
 	}
 
-	notFound := db.First(&contato, id).RecordNotFound()
+	notFound := database.DB.Preload("Empresas").First(&contato, id).RecordNotFound()
 
 
 	if notFound == true {
@@ -58,13 +59,14 @@ func CreateContato(c *gin.Context) {
 		return
 	}
 
-	errors := db.Create(&contato).GetErrors()
+	errors := database.DB.Create(&contato).GetErrors()
 
 	if len(errors) > 0 {
 		resErr := NewInternalServerError(errors[0].Error())
 		c.JSON(resErr.Status, resErr)
 		return
 	}
+	fmt.Println("%+v\n", contato)
 
 	fmt.Println(len(errors))
 
@@ -80,9 +82,9 @@ func UpdateContato(c *gin.Context) {
 	}
 
 	var originalContato model.Contato
-	db.First(&originalContato, contato.Id)
+	database.DB.First(&originalContato, contato.Id)
 
-	db.Save(&contato)
+	database.DB.Save(&contato)
 
 	c.JSON(http.StatusOK, contato)
 }
@@ -101,7 +103,7 @@ func DeleteContato(c *gin.Context) {
 		},
 	}
 
-	db.Delete(&contato)
+	database.DB.Delete(&contato)
 
 	c.Status(http.StatusOK)
 }

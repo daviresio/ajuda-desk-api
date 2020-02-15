@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/daviresio/ajuda-desk-api/database"
 	"github.com/daviresio/ajuda-desk-api/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 func ListScore(c *gin.Context) {
 	var scores []model.Score
 
-	errors := db.Find(&scores).GetErrors();
+	errors := database.DB.Find(&scores).GetErrors();
 
 	fmt.Println(len(errors))
 
@@ -37,7 +38,7 @@ func FindScore(c *gin.Context)  {
 		return
 	}
 
-	notFound := db.First(&score, id).RecordNotFound()
+	notFound := database.DB.First(&score, id).RecordNotFound()
 
 
 	if notFound == true {
@@ -58,7 +59,7 @@ func CreateScore(c *gin.Context) {
 		return
 	}
 
-	errors := db.Create(&score).GetErrors()
+	errors := database.DB.Create(&score).GetErrors()
 
 	if len(errors) > 0 {
 		resErr := NewInternalServerError(errors[0].Error())
@@ -80,9 +81,9 @@ func UpdateScore(c *gin.Context) {
 	}
 
 	var originalScore model.Score
-	db.First(&originalScore, score.Id)
+	database.DB.First(&originalScore, score.Id)
 
-	db.Save(&score)
+	database.DB.Save(&score)
 
 	c.JSON(http.StatusOK, score)
 }
@@ -101,7 +102,7 @@ func DeleteScore(c *gin.Context) {
 		},
 	}
 
-	db.Delete(&score)
+	database.DB.Delete(&score)
 
 	c.Status(http.StatusOK)
 }

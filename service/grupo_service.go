@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/daviresio/ajuda-desk-api/database"
 	"github.com/daviresio/ajuda-desk-api/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 func ListGrupo(c *gin.Context) {
 	var grupos []model.Grupo
 
-	db.Find(&grupos);
+	database.DB.Find(&grupos);
 
 	c.JSON(http.StatusOK, grupos)
 
@@ -25,7 +26,7 @@ func FindGrupo(c *gin.Context)  {
 		return
 	}
 
-	notFound := db.First(&grupo, id).RecordNotFound()
+	notFound := database.DB.First(&grupo, id).RecordNotFound()
 
 
 	if notFound == true {
@@ -46,7 +47,7 @@ func CreateGrupo(c *gin.Context) {
 		return
 	}
 
-	db.Create(&grupo)
+	database.DB.Create(&grupo)
 
 	c.JSON(http.StatusOK, grupo)
 
@@ -60,9 +61,9 @@ func UpdateGrupo(c *gin.Context) {
 	}
 
 	var originalGrupo model.Grupo
-	db.First(&originalGrupo, grupo.Id)
+	database.DB.First(&originalGrupo, grupo.Id)
 
-	db.Save(&grupo)
+	database.DB.Save(&grupo)
 
 	c.JSON(http.StatusOK, grupo)
 }
@@ -81,7 +82,7 @@ func DeleteGrupo(c *gin.Context) {
 		},
 	}
 
-	db.Delete(&grupo)
+	database.DB.Delete(&grupo)
 
 	c.Status(http.StatusOK)
 }

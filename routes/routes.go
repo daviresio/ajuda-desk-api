@@ -1,4 +1,4 @@
-package controller
+package routes
 
 import (
 	"github.com/daviresio/ajuda-desk-api/service"
@@ -13,18 +13,6 @@ var (
 func init() {
 
 	router.Use(cors.Default())
-
-	//router.GET("/empresas/:id")
-	//router.GET("/empresas")
-	//router.POST("/empresas")
-	//router.PUT("/empresas")
-	//router.DELETE("/empresas/:id")
-	//
-	//router.GET("/usuarios/:id")
-	//router.GET("/usuarios")
-	//router.POST("/usuarios")
-	//router.PUT("/usuarios")
-	//router.DELETE("/usuarios/:id")
 
 	router.GET("/grupos/:id", service.FindGrupo)
 	router.GET("/grupos", service.ListGrupo)
@@ -50,8 +38,27 @@ func init() {
 	router.PUT("/scores", service.UpdateScore)
 	router.DELETE("/scores/:id", service.DeleteScore)
 
+	router.GET("/tipo-empresas/:id", service.FindTipoEmpresa)
+	router.GET("/tipo-empresas", service.ListTipoEmpresa)
+	router.POST("/tipo-empresas", service.CreateTipoEmpresa)
+	router.PUT("/tipo-empresas", service.UpdateTipoEmpresa)
+	router.DELETE("/tipo-empresas/:id", service.DeleteTipoEmpresa)
+
+	router.GET("/tipo-planos/:id", service.FindTipoPlano)
+	router.GET("/tipo-planos", service.ListTipoPlano)
+	router.POST("/tipo-planos", service.CreateTipoPlano)
+	router.PUT("/tipo-planos", service.UpdateTipoPlano)
+	router.DELETE("/tipo-planos/:id", service.DeleteTipoPlano)
+
+	router.GET("/anotacoes/:id", service.FindAnotacao)
+	router.GET("/anotacoes", service.ListAnotacao)
+	router.POST("/anotacoes", service.CreateAnotacao)
+	router.PUT("/anotacoes", service.UpdateAnotacao)
+	router.DELETE("/anotacoes/:id", service.DeleteAnotacao)
+
 }
 
 func GetRouter() *gin.Engine {
 	return router
 }
+

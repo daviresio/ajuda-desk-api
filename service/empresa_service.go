@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/daviresio/ajuda-desk-api/database"
 	"github.com/daviresio/ajuda-desk-api/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -14,7 +15,7 @@ func ListEmpresa(c *gin.Context) {
 
 	fmt.Println(query)
 
-	errors := db.Preload("Contatos").Find(&empresas).GetErrors();
+	errors := database.DB.Preload("Contatos").Preload("Anotacoes").Find(&empresas).GetErrors();
 
 	fmt.Println(len(errors))
 
@@ -41,7 +42,7 @@ func FindEmpresa(c *gin.Context)  {
 		return
 	}
 
-	notFound := db.First(&empresa, id).RecordNotFound()
+	notFound := database.DB.Preload("Anotacoes").Preload("Contatos").First(&empresa, id).RecordNotFound()
 
 
 	if notFound == true {
@@ -49,6 +50,7 @@ func FindEmpresa(c *gin.Context)  {
 		c.JSON(resErr.Status, resErr)
 		return
 	}
+	fmt.Printf("%+v\n", empresa)
 
 	c.JSON(http.StatusOK, empresa)
 
@@ -62,7 +64,7 @@ func CreateEmpresa(c *gin.Context) {
 		return
 	}
 
-	errors := db.Create(&empresa).GetErrors()
+	errors := database.DB.Create(&empresa).GetErrors()
 
 	if len(errors) > 0 {
 		resErr := NewInternalServerError(errors[0].Error())
@@ -84,9 +86,9 @@ func UpdateEmpresa(c *gin.Context) {
 	}
 
 	var originalEmpresa model.Empresa
-	db.First(&originalEmpresa, empresa.Id)
+	database.DB.First(&originalEmpresa, empresa.Id)
 
-	db.Save(&empresa)
+	database.DB.Save(&empresa)
 
 	c.JSON(http.StatusOK, empresa)
 }
@@ -105,7 +107,7 @@ func DeleteEmpresa(c *gin.Context) {
 		},
 	}
 
-	db.Delete(&empresa)
+	database.DB.Delete(&empresa)
 
 	c.Status(http.StatusOK)
 }
